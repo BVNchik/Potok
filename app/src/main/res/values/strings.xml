@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TestingReadNumberPhone</string>
+    <string name="email">Ваш email</string>
+    <string name="you_password">Ваш пароль</string>
+    <string name="title_authorization">Введите свои данные\nдля входа в potok</string>
+    <string name="to_come_in">войти</string>
+    <string name="check_in"><u>Еще нет аккаунта?</u></string>
+    <string name="out">Выйти</string>
+    <string name="on">включен</string>
+    <string name="callerID">Определитель номера</string>
+</resources>
