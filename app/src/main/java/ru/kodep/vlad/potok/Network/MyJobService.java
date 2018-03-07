@@ -1,22 +1,16 @@
-package ru.kodep.vlad.testingreadnumberphone.Network;
+package ru.kodep.vlad.potok.Network;
 
 
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import ru.kodep.vlad.testingreadnumberphone.PotokApp;
-import ru.kodep.vlad.testingreadnumberphone.repository.DataRepository;
-import ru.kodep.vlad.testingreadnumberphone.ui.fragment.FragmentDisplayOfData;
-import rx.Subscription;
+import ru.kodep.vlad.potok.PotokApp;
+import ru.kodep.vlad.potok.repository.DataRepository;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -28,11 +22,9 @@ import rx.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class MyJobService extends JobService {
-    private Subscription mSubscription;
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Log.i(getClass().getName(), "WORK");
         PotokApp app = (PotokApp) getApplication();
         DataRepository mRepository = app.getDataRepository();
         mRepository.loadUsers()

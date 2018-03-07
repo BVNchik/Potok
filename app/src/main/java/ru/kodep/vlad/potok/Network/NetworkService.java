@@ -1,18 +1,17 @@
-package ru.kodep.vlad.testingreadnumberphone.Network;
+package ru.kodep.vlad.potok.Network;
 
 
 
 
 import android.content.Context;
-import android.preference.Preference;
 
 import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.kodep.vlad.testingreadnumberphone.models.ResponseData;
-import ru.kodep.vlad.testingreadnumberphone.models.User;
+import ru.kodep.vlad.potok.models.ResponseData;
+import ru.kodep.vlad.potok.models.User;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -35,7 +34,7 @@ public class NetworkService {
 
     public Single<List<User>> loadUsers(Context context) {
 
-        return mPotokAPI.customerData(new Preferences(context).getToken())
+        return mPotokAPI.customerData(new Preferences(context).getToken(), new Preferences(context).getLastRequest())
                 .map(new Func1<ResponseData<List<User>>, List<User>>() {
                     @Override
                     public List<User> call(ResponseData<List<User>> listResponseData) {

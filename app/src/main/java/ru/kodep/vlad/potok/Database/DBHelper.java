@@ -1,9 +1,8 @@
-package ru.kodep.vlad.testingreadnumberphone.Database;
+package ru.kodep.vlad.potok.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 /**
@@ -24,7 +23,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
         super(context, NAMETABLE, null, 1);
-        Log.i("DBHelper", String.valueOf(context));
     }
 
     @Override

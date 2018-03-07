@@ -1,4 +1,4 @@
-package ru.kodep.vlad.testingreadnumberphone.models;
+package ru.kodep.vlad.potok.models;
 
 /**
  * Created by vlad on 26.02.18

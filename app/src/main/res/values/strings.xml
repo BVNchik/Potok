@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestingReadNumberPhone</string>
+    <string name="app_name">Potok</string>
     <string name="email">Ваш email</string>
     <string name="you_password">Ваш пароль</string>
     <string name="title_authorization">Введите свои данные\nдля входа в potok</string>

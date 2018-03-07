@@ -1,8 +1,7 @@
-package ru.kodep.vlad.testingreadnumberphone.Network;
+package ru.kodep.vlad.potok.Network;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 
 import retrofit2.Call;
@@ -10,8 +9,8 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import ru.kodep.vlad.testingreadnumberphone.models.AuthorizationModel;
-import ru.kodep.vlad.testingreadnumberphone.models.Credentials;
+import ru.kodep.vlad.potok.models.AuthorizationModel;
+import ru.kodep.vlad.potok.models.Credentials;
 
 
 /**
@@ -42,7 +41,6 @@ public class AuthorizationRequest {
             @Override
             public void onResponse(@NonNull Call<AuthorizationModel> call, @NonNull retrofit2.Response<AuthorizationModel> customerDataResponse) {
                 if (customerDataResponse.isSuccessful()) {
-                    Log.i("Main", "Token: " + customerDataResponse.body().getToken());
                     String token = customerDataResponse.body().getToken();
                     String validTo = customerDataResponse.body().getValidTo();
                     new Preferences(context).setToken(token);
@@ -56,7 +54,6 @@ public class AuthorizationRequest {
 
             @Override
             public void onFailure(@NonNull Call<AuthorizationModel> call, @NonNull Throwable t) {
-                Log.i("Main", "failure " + t);
             }
 
         });

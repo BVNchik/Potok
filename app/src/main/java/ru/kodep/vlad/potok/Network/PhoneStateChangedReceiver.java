@@ -1,4 +1,4 @@
-package ru.kodep.vlad.testingreadnumberphone.Network;
+package ru.kodep.vlad.potok.Network;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +19,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
 
 import java.util.Objects;
 
-import ru.kodep.vlad.testingreadnumberphone.Database.UsersStorage;
-import ru.kodep.vlad.testingreadnumberphone.R;
-import ru.kodep.vlad.testingreadnumberphone.models.User;
-import ru.kodep.vlad.testingreadnumberphone.ui.activity.HTCActivity;
+import ru.kodep.vlad.potok.Database.UsersStorage;
+import ru.kodep.vlad.potok.R;
+import ru.kodep.vlad.potok.models.User;
+import ru.kodep.vlad.potok.ui.activity.HTCActivity;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,8 +61,7 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                     intents.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intents);
                 } else
-                    Log.i("Receiver", "showWindow");
-                showWindow(context, phoneNumber);
+                    showWindow(context, phoneNumber);
 
             } else if (phoneState.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
                 //Телефон находится в режиме звонка (набор номера при исходящем звонке / разговор)
@@ -90,20 +82,9 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
 
     @SuppressLint("InflateParams")
     private void showWindow(final Context context, final String phone) {
-
+        final String[] numberInTheDatabase = new String[1];
         mUsersStorage = new UsersStorage();
-        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InlinedApi") WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-//                WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.TOP;
-        assert layoutInflater != null;
-        windowLayout = (ViewGroup) layoutInflater.inflate(R.layout.info, null);
+
 
         Single.create(new Single.OnSubscribe<User>() {
             @Override
@@ -111,11 +92,9 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
 
                 try {
                     User user = mUsersStorage.seekUser(phone, context);
-                    Log.i("Vivelo", " " + user.getName());
                     singleSubscriber.onSuccess(user);
                 } catch (Throwable e) {
                     singleSubscriber.onError(e);
-                    Log.i("Cursor2", "ошибка: " + e);
                 }
             }
         }).subscribeOn(Schedulers.io())
@@ -123,32 +102,46 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
-                        Log.i("Pokaz", Thread.currentThread().getName());
-                        TextView tvNumber = windowLayout.findViewById(R.id.tvNumberPhone);
-                        TextView tvUserName = windowLayout.findViewById(R.id.tvUserName);
-                        TextView tvTitle = windowLayout.findViewById(R.id.tvTitles);
-                        ImageView ivAvatar = windowLayout.findViewById(R.id.ivAvatar);
-                        tvNumber.setText(phone);
-                        tvUserName.setText(user.getName());
-                        tvTitle.setText(user.getTitle());
-                        Glide.with(context).load(user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.face_icon)).into(ivAvatar);
-                    }
+                        if( user.getName() != null) {
+                            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            @SuppressLint("InlinedApi") WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                                    WindowManager.LayoutParams.MATCH_PARENT,
+                                    WindowManager.LayoutParams.WRAP_CONTENT,
+                                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                                    PixelFormat.TRANSLUCENT);
+                            params.gravity = Gravity.TOP;
+                            assert layoutInflater != null;
+                            windowLayout = (ViewGroup) layoutInflater.inflate(R.layout.info, null);
+                            TextView tvNumber = windowLayout.findViewById(R.id.tvNumberPhone);
+                            TextView tvUserName = windowLayout.findViewById(R.id.tvUserName);
+                            TextView tvTitle = windowLayout.findViewById(R.id.tvTitles);
+                            ImageView ivAvatar = windowLayout.findViewById(R.id.ivAvatar);
+                            tvNumber.setText(phone);
+                            numberInTheDatabase[0] = user.getName();
+                            tvUserName.setText(user.getName());
+                            tvTitle.setText(user.getTitle());
+                            Glide.with(context).load(user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.face_icon)).into(ivAvatar);
+                            Button buttonClose = windowLayout.findViewById(R.id.buttonClose);
+                            buttonClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    closeWindow();
+                                }
+                            });
+
+                            windowManager.addView(windowLayout, params);
+                        }
+                        }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         throwable.printStackTrace();
-                        Log.i("ERROR", String.valueOf(throwable));
                     }
                 });
 
-        Button buttonClose = windowLayout.findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeWindow();
-            }
-        });
-        windowManager.addView(windowLayout, params);
+
     }
 
     private void closeWindow() {

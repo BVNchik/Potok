@@ -1,16 +1,18 @@
-package ru.kodep.vlad.testingreadnumberphone.Database;
+package ru.kodep.vlad.potok.Database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import ru.kodep.vlad.testingreadnumberphone.models.User;
+import ru.kodep.vlad.potok.Network.Preferences;
+import ru.kodep.vlad.potok.models.User;
 
 /**
  * Created by vlad on 26.02.18
@@ -29,23 +31,22 @@ public class UsersStorage {
         String selection = DBHelper.PHONES + "= ?";
         List<String> userPhones = user.getPhones();
         String phone = userPhones.get(0);
-        Log.i("Phone", "phone: " + phone);
         String[] selectionArgs = new String[]{phone};
         @SuppressLint("Recycle") Cursor cursor = db.query(DBHelper.NAMETABLE, null, selection, selectionArgs, null, null, null);
         if (cursor.moveToFirst()) {
             int userPhoneColIndex = cursor.getColumnIndex(DBHelper.PHONES);
             userPhone = cursor.getString(userPhoneColIndex);
         }
-        Log.i("Phone", "userPhone: " + userPhone);
         if (userPhone == null) {
             cv = putCV(user);
-            long rowID = db.insert(DBHelper.NAMETABLE, null, cv);
-            Log.i("DataRepository", "insert: " + rowID);
+          db.insert(DBHelper.NAMETABLE, null, cv);
         } else {
             cv = putCV(user);
-            long rowID = db.update(DBHelper.NAMETABLE, cv, selection, selectionArgs);
-            Log.i("DataRepository", "update: " + rowID);
+          db.update(DBHelper.NAMETABLE, cv, selection, selectionArgs);
         }
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+        String lastRequest = dateFormat.format(new Date());
+        new Preferences(context).setLastRequest(lastRequest);
     }
 
     private ContentValues putCV(User user) {
@@ -61,7 +62,6 @@ public class UsersStorage {
     }
 
     public User seekUser(String phoneUser, Context context) {
-        Log.i("Phones", phoneUser);
         List<String> phones = new ArrayList<>();
         mDBHelper = new DBHelper(context);
         db = mDBHelper.getWritableDatabase();
@@ -86,9 +86,7 @@ public class UsersStorage {
             applicationUrl = cursor.getString(applicationUrlColIndex);
             createdAt = cursor.getString(createdAtColIndex);
             updatedAt = cursor.getString(updatedAtColIndex);
-            Log.i("Phones", phone);
             phones.add(phone);
-            Log.i("Phones", phones.get(0));
         }
         return new User(id, userName, title, phones, avatarUrl, applicationUrl, createdAt, updatedAt);
     }

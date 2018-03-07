@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="ru.kodep.vlad.testingreadnumberphone.ui.fragment.FragmentAuthorization"
+    tools:context="ru.kodep.vlad.potok.ui.fragment.FragmentAuthorization"
     tools:layout_editor_absoluteY="25dp">
 
     <EditText

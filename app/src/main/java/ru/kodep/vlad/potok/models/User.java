@@ -1,4 +1,4 @@
-package ru.kodep.vlad.testingreadnumberphone.models;
+package ru.kodep.vlad.potok.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

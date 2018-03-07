@@ -1,4 +1,4 @@
-package ru.kodep.vlad.testingreadnumberphone.Network;
+package ru.kodep.vlad.potok.Network;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,9 +10,10 @@ import android.content.SharedPreferences;
  */
 
 public class Preferences {
+    private static final String NAME = "Launch";
     //Вспомогательный класс для хранения выбранного города
     private SharedPreferences sharedPreferences;
-private static final String NAME = "Launch";
+
     @SuppressLint("CommitPrefEdits")
     public Preferences(Context activity) {
         sharedPreferences = activity.getSharedPreferences(NAME, Activity.MODE_PRIVATE);
@@ -20,7 +21,18 @@ private static final String NAME = "Launch";
 
     @SuppressLint("CommitPrefEdits")
     public void cleaningData(Context context) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit(); editor.clear(); editor.apply();
+        SharedPreferences.Editor editor = context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public String getLastRequest() {
+        return sharedPreferences.getString("LastRequest", "");
+    }
+
+    public void setLastRequest(String lastRequest) {
+        sharedPreferences.edit().putString("LastRequest", lastRequest).apply();
+
     }
 
     // Возвращаем город по умолчанию, если SharedPreferences пустые
