@@ -1,14 +1,16 @@
 package ru.kodep.vlad.potok;
 
-
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 
-import java.util.Objects;
+import java.util.Calendar;
 
-import ru.kodep.vlad.potok.Network.Preferences;
+import ru.kodep.vlad.potok.service.CallReceiverService;
+import ru.kodep.vlad.potok.repository.DataRepository;
 import ru.kodep.vlad.potok.ui.fragment.FragmentAuthorization;
 import ru.kodep.vlad.potok.ui.fragment.FragmentDisplayOfData;
 
@@ -20,10 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startService(new Intent(this,CallReceiverService.class));
         FragmentAuthorization fragmentAuthorization;
         FragmentDisplayOfData fragmentDisplayOfData;
-        String launched = new Preferences(this).getLaunch();
-        if (Objects.equals(launched, "true")) {
+        PotokApp app = (PotokApp) getApplication();
+        DataRepository mRepository = app.getDataRepository();
+        long time = mRepository.getmPreferences().getValidTo();
+        if (time > Calendar.getInstance().getTimeInMillis()) {
             fragmentDisplayOfData = new FragmentDisplayOfData();
             getSupportFragmentManager()
                     .beginTransaction()
@@ -35,8 +40,30 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.fragmentLayout, fragmentAuthorization)
                     .commit();
-            new Preferences(this).setLaunch();
-            new Preferences(this).setLastRequest("1970-03-07T13:31:50+03:00");
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(getClass().getName(), "ONPAUSE");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(getClass().getName(), "ONSTOP");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(getClass().getName(), "ONRESTART");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(getClass().getName(), "ONDESTROY");
     }
 }

@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Network;
+package ru.kodep.vlad.potok.network;
 
 
 import android.annotation.SuppressLint;

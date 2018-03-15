@@ -2,10 +2,12 @@ package ru.kodep.vlad.potok;
 
 import android.app.Application;
 
-import ru.kodep.vlad.potok.Database.DBHelper;
-import ru.kodep.vlad.potok.Database.UsersStorage;
-import ru.kodep.vlad.potok.Network.NetworkService;
-import ru.kodep.vlad.potok.Service.JobDispatcher;
+
+import ru.kodep.vlad.potok.database.DBHelper;
+import ru.kodep.vlad.potok.database.UsersStorage;
+import ru.kodep.vlad.potok.network.NetworkService;
+import ru.kodep.vlad.potok.network.Preferences;
+import ru.kodep.vlad.potok.service.JobDispatcher;
 import ru.kodep.vlad.potok.repository.DataRepository;
 
 /**
@@ -18,7 +20,7 @@ public class PotokApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mDataRepository = new DataRepository(new UsersStorage(), new NetworkService(), new JobDispatcher(this),  new DBHelper(this),this);
+        mDataRepository = new DataRepository(new UsersStorage(), new NetworkService(), new JobDispatcher(this),  new DBHelper(this), new ReminderOfValidity(), new Preferences(this), this);
 
     }
 

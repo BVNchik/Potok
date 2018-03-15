@@ -1,18 +1,21 @@
 package ru.kodep.vlad.potok.repository;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-import ru.kodep.vlad.potok.Database.DBHelper;
-import ru.kodep.vlad.potok.Database.UsersStorage;
-import ru.kodep.vlad.potok.Network.NetworkService;
-import ru.kodep.vlad.potok.Network.Preferences;
-import ru.kodep.vlad.potok.Service.JobDispatcher;
+import ru.kodep.vlad.potok.database.DBHelper;
+import ru.kodep.vlad.potok.database.UsersStorage;
+import ru.kodep.vlad.potok.network.NetworkService;
+import ru.kodep.vlad.potok.network.Preferences;
+import ru.kodep.vlad.potok.ReminderOfValidity;
+import ru.kodep.vlad.potok.service.JobDispatcher;
 import ru.kodep.vlad.potok.models.User;
 import rx.Observable;
 import rx.Single;
-
 import rx.functions.Func1;
 import rx.functions.Func2;
 
@@ -26,16 +29,22 @@ public class DataRepository {
     private final NetworkService mNetworkService;
     private final Context mContext;
     private final JobDispatcher mJobDispatcher;
+    private ReminderOfValidity mReminderOfValidity;
+    private Preferences mPreferences;
+    private DBHelper mDBHelper;
 
-    public DataRepository(UsersStorage usersStorage, NetworkService networkService, JobDispatcher jobDispatcher, DBHelper dbHelper, Context context) {
+    public DataRepository(UsersStorage usersStorage, NetworkService networkService, JobDispatcher jobDispatcher, DBHelper dbHelper, ReminderOfValidity reminderOfValidity, Preferences preferences, Context context) {
         mUsersStorage = usersStorage;
         mNetworkService = networkService;
         mContext = context;
         mJobDispatcher = jobDispatcher;
-
+        mReminderOfValidity = reminderOfValidity;
+        mPreferences = preferences;
+        mDBHelper = dbHelper;
     }
 
     public Single<Boolean> loadUsers() {
+        Log.i("ОБНОВЛЕНИЕ", "ЗАПУСТИЛОСЬ ОБНОВЛЕНИЕ");
         return mNetworkService.loadUsers(mContext)
                 .toObservable()
                 .flatMap(new Func1<List<User>, Observable<User>>() {
@@ -57,7 +66,18 @@ public class DataRepository {
                 }).toSingle();
     }
 
-    public String getLastRequest(){
-      return new Preferences(mContext).getLastRequest();
+    public String getLastRequest() {
+        long time = mPreferences.getLastRequest();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+        return simpleDateFormat.format(time);
+    }
+
+    public Preferences getmPreferences() {
+        return mPreferences;
+    }
+public DBHelper getmDBHelper() {return  mDBHelper;}
+
+    public ReminderOfValidity getmReminderOfValidity() {
+        return mReminderOfValidity;
     }
 }

@@ -1,11 +1,12 @@
 package ru.kodep.vlad.potok.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,6 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
 
     private Subscription mSubscription;
 
-    @SuppressLint("ValidFragment")
-    public FragmentDisplayOfData() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,13 +51,14 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     @Override
                     public void call(Boolean aBoolean) {
 
-                            tvSynchronization.setText("Последняя синхронизация: " + mRepository.getLastRequest());
+                        tvSynchronization.setText("Последняя синхронизация: " + mRepository.getLastRequest());
                     }
                 }, new Action1<Throwable>() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void call(Throwable throwable) {
                         //обработать исключение
+                        throwable.printStackTrace();
                         tvSynchronization.setText("Исключение: " + throwable);
                     }
                 });
@@ -83,14 +82,17 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnOut:
                 outAccount();
+                break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void outAccount() {
         new DataCleaning(getContext());
         FragmentAuthorization fragmentAuthorization = new FragmentAuthorization();
@@ -99,5 +101,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                 .replace(R.id.fragmentLayout, fragmentAuthorization)
                 .commit();
     }
+
+
 
 }

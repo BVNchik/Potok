@@ -1,16 +1,24 @@
-package ru.kodep.vlad.potok.Network;
+package ru.kodep.vlad.potok.network;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import ru.kodep.vlad.potok.PotokApp;
 import ru.kodep.vlad.potok.models.AuthorizationModel;
 import ru.kodep.vlad.potok.models.Credentials;
+import ru.kodep.vlad.potok.repository.DataRepository;
 
 
 /**
@@ -41,10 +49,21 @@ public class AuthorizationRequest {
             @Override
             public void onResponse(@NonNull Call<AuthorizationModel> call, @NonNull retrofit2.Response<AuthorizationModel> customerDataResponse) {
                 if (customerDataResponse.isSuccessful()) {
+                    PotokApp app = (PotokApp) context.getApplicationContext();
+                    DataRepository mRepository = app.getDataRepository();
                     String token = customerDataResponse.body().getToken();
                     String validTo = customerDataResponse.body().getValidTo();
-                    new Preferences(context).setToken(token);
-                    new Preferences(context).setValidTo(validTo);
+                    Date dateValidTo = null;
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("RFC"));
+                    try {
+                        dateValidTo = simpleDateFormat.parse(validTo);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    assert dateValidTo != null;
+                    mRepository.getmPreferences().setToken(token);
+                    mRepository.getmPreferences().setValidTo(dateValidTo.getTime());
                     mAuthorizationChangedCallback.WhenAuthorizing();
 
                 } else {

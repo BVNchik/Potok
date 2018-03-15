@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Network;
+package ru.kodep.vlad.potok.network;
 
 
 
@@ -10,8 +10,10 @@ import java.util.List;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.kodep.vlad.potok.PotokApp;
 import ru.kodep.vlad.potok.models.ResponseData;
 import ru.kodep.vlad.potok.models.User;
+import ru.kodep.vlad.potok.repository.DataRepository;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -33,8 +35,9 @@ public class NetworkService {
     }
 
     public Single<List<User>> loadUsers(Context context) {
-
-        return mPotokAPI.customerData(new Preferences(context).getToken(), new Preferences(context).getLastRequest())
+        PotokApp app = (PotokApp) context.getApplicationContext();
+        DataRepository mRepository = app.getDataRepository();
+        return mPotokAPI.customerData(new Preferences(context).getToken(),mRepository.getLastRequest() )
                 .map(new Func1<ResponseData<List<User>>, List<User>>() {
                     @Override
                     public List<User> call(ResponseData<List<User>> listResponseData) {

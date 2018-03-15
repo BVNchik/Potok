@@ -3,8 +3,10 @@ package ru.kodep.vlad.potok.ui.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,9 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ru.kodep.vlad.potok.Network.AuthorizationRequest;
+import ru.kodep.vlad.potok.network.AuthorizationRequest;
+import ru.kodep.vlad.potok.PotokApp;
 import ru.kodep.vlad.potok.R;
 import ru.kodep.vlad.potok.models.Credentials;
+import ru.kodep.vlad.potok.repository.DataRepository;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -30,10 +34,6 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
     ProgressBar progressBar;
     FragmentDisplayOfData fragmentDisplayOfData;
     AuthorizationRequest authorizationRequest;
-
-    @SuppressLint("ValidFragment")
-    public FragmentAuthorization() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,14 +80,12 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
         authorizationRequest = new AuthorizationRequest(getActivity(), email, password, this);
     }
 
-    @Override
-    public void onStop() {
-//        authorizationRequest.unsubscribe();
-        super.onStop();
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void WhenAuthorizing() {
+        PotokApp app = (PotokApp) getActivity().getApplication();
+        DataRepository mRepository = app.getDataRepository();
+        mRepository.getmReminderOfValidity().onCreate(getActivity());
         fragmentDisplayOfData = new FragmentDisplayOfData();
         getFragmentManager()
                 .beginTransaction()

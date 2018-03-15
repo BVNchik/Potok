@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Service;
+package ru.kodep.vlad.potok.service;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
-import ru.kodep.vlad.potok.Network.MyJobService;
+import ru.kodep.vlad.potok.network.MyJobService;
 
 /**
  * Created by vlad on 07.03.18
@@ -24,7 +24,7 @@ public JobDispatcher(Context context) {
                 .setTag("UniqueTagForYourJob")
                 .setReplaceCurrent(false)
                 .setRecurring(true)
-                .setTrigger(Trigger.executionWindow(10 * 60, 12 * 60))
+                .setTrigger(Trigger.executionWindow(100 * 60, 120 * 60))
                 .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                 .build();
         dispatcher.mustSchedule(job);

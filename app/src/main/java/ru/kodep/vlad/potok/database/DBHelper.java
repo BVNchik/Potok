@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Database;
+package ru.kodep.vlad.potok.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

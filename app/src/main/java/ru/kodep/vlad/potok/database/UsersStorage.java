@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Database;
+package ru.kodep.vlad.potok.database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -6,13 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
-import ru.kodep.vlad.potok.Network.Preferences;
+import ru.kodep.vlad.potok.PotokApp;
 import ru.kodep.vlad.potok.models.User;
+import ru.kodep.vlad.potok.repository.DataRepository;
 
 /**
  * Created by vlad on 26.02.18
@@ -39,14 +39,16 @@ public class UsersStorage {
         }
         if (userPhone == null) {
             cv = putCV(user);
-          db.insert(DBHelper.NAMETABLE, null, cv);
+            db.insert(DBHelper.NAMETABLE, null, cv);
         } else {
             cv = putCV(user);
-          db.update(DBHelper.NAMETABLE, cv, selection, selectionArgs);
+            db.update(DBHelper.NAMETABLE, cv, selection, selectionArgs);
         }
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
-        String lastRequest = dateFormat.format(new Date());
-        new Preferences(context).setLastRequest(lastRequest);
+
+        PotokApp app = (PotokApp) context.getApplicationContext();
+        DataRepository mRepository = app.getDataRepository();
+        mRepository.getmPreferences().setLastRequest(Calendar.getInstance().getTimeInMillis());
+
     }
 
     private ContentValues putCV(User user) {

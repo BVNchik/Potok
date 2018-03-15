@@ -1,4 +1,4 @@
-package ru.kodep.vlad.potok.Network;
+package ru.kodep.vlad.potok.network;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,12 +26,12 @@ public class Preferences {
         editor.apply();
     }
 
-    public String getLastRequest() {
-        return sharedPreferences.getString("LastRequest", "");
+    public long getLastRequest() {
+        return sharedPreferences.getLong("LastRequest", 0);
     }
 
-    public void setLastRequest(String lastRequest) {
-        sharedPreferences.edit().putString("LastRequest", lastRequest).apply();
+    public void setLastRequest(Long lastRequest) {
+        sharedPreferences.edit().putLong("LastRequest", lastRequest).apply();
 
     }
 
@@ -44,20 +44,13 @@ public class Preferences {
         sharedPreferences.edit().putString("Token", token).apply();
     }
 
-    public String getValidTo() {
-        return sharedPreferences.getString("ValidTo", "");
+    public long getValidTo() {
+        return sharedPreferences.getLong("ValidTo", 0);
     }
 
-    void setValidTo(String validTo) {
-        sharedPreferences.edit().putString("ValidTo", validTo).apply();
+   void setValidTo(long validTo) {
+        sharedPreferences.edit().putLong("ValidTo", validTo).apply();
     }
 
-    public String getLaunch() {
-        return sharedPreferences.getString("Launched", "");
-    }
-
-    public void setLaunch() {
-        sharedPreferences.edit().putString("Launched", "true").apply();
-    }
 
 }
