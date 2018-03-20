@@ -7,6 +7,7 @@
     <color name="text_color_button">#82dfff</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorGrey">#c2c0c0</color>
-    <color name="colorTextViewBackground">#00ce02</color>
+    <color name="colorTvOnBackground">#00ce02</color>
+    <color name="colorTvOffBackground">#ff3026</color>
     <color name="textColor">#585858</color>
 </resources>

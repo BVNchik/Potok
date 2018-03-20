@@ -1,25 +1,14 @@
 <resources>
     <string name="app_name">Potok</string>
-    <string name="email">Ваш email</string>
-    <string name="you_password">Ваш пароль</string>
-    <string name="title_authorization">Введите свои данные\nдля входа в potok</string>
-    <string name="to_come_in">войти</string>
-    <string name="check_in"><u>Еще нет аккаунта?</u></string>
-    <string name="out">Выйти</string>
-    <string name="on">включен</string>
-    <string name="callerID">Определитель номера</string>
-
-    <string name="potok_notification_title_template">Potok: %1$s</string>
-
-    <!-- TODO: remove this placeholder text -->
-    <string name="potok_notification_placeholder_text_template">You said %1$s and lorem ipsum dolor
-        sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel semper
-        venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis. Pellentesque
-        vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper ornare lacus. Duis
-        ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis viverra rhoncus sit amet
-        nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec tortor.
-    </string>
-
+    <string name="email">Your email</string>
+    <string name="you_password">Your password</string>
+    <string name="title_authorization">Enter your data \nto enter the stream</string>
+    <string name="to_come_in">sign in</string>
+    <string name="check_in"><u>No account yet?</u></string>
+    <string name="out">out</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
+    <string name="callerID">Caller ID</string>
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="todo">TODO</string>

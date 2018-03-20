@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Potok</string>
+    <string name="email">Ваш email</string>
+    <string name="you_password">Ваш пароль</string>
+    <string name="title_authorization">Введите свои данные  \nдля входа в potok</string>
+    <string name="to_come_in">войти</string>
+    <string name="check_in"><u>Еще нет аккаунта?</u></string>
+    <string name="out">выйти</string>
+    <string name="on">включен</string>
+    <string name="off">выключен</string>
+    <string name="callerID">Определитель номера</string>
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
+    <string name="todo">TODO</string>
 
 </resources>

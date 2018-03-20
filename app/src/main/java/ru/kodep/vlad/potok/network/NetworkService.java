@@ -1,8 +1,5 @@
 package ru.kodep.vlad.potok.network;
 
-
-
-
 import android.content.Context;
 
 import java.util.List;

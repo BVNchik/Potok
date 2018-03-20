@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context="ru.kodep.vlad.potok.ui.fragment.FragmentAuthorization"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@color/colorBackground">
 
     <EditText
         android:id="@+id/etEmailPerson"
@@ -17,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:padding="8dp"
@@ -28,7 +27,6 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/etPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -40,6 +38,7 @@
         android:layout_marginStart="50dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/you_password"
         android:inputType="textPassword"
         android:padding="8dp"
@@ -82,7 +81,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:targetApi="lollipop" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -99,20 +99,17 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="@string/title_authorization"
-        android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/etEmailPerson"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/tvCheckIn"

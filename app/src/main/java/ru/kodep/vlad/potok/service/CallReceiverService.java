@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -92,26 +93,40 @@ public class CallReceiverService extends Service {
     }
 
     class CallReceiver extends BroadcastReceiver {
+        Context pcontext;
+        Intent mIntent;
         CallReceiver() {
         }
 
         public void onReceive(Context context, Intent intent) {
-            Log.i(getClass().getName(), "RECEIVER ЗАПУЩЕН! ");
-            if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
-                String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-                if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-                    Log.i(getClass().getName(), "ИДЕТ ЗВОНОК! ");
-                    //Трубка не поднята, телефон звонит
-                    String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-                    showWindow(context, phoneNumber, intent);
+            pcontext = context;
+mIntent = intent;
+            try {
+                Log.i(getClass().getName(), "СРАБОТАЛ РЕСИВЕР ИЗ СЕРВИСА");
+                TelephonyManager tmgr = (TelephonyManager) context
+                        .getSystemService(Context.TELEPHONY_SERVICE);
 
-                } else if (phoneState.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                    //Телефон находится в режиме звонка (набор номера при исходящем звонке / разговор)
-                    Log.i(getClass().getName(), "РЕЖИМ ЗВОНКА! ");
-                } else if (phoneState.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-                    //Телефон находится в ждущем режиме - это событие наступает по окончанию разговора
-                    //или в ситуации "отказался поднимать трубку и сбросил звонок".
-                    Log.i(getClass().getName(), "ЗВОНОК ОКОНЧЕН! ");
+                MyPhoneStateListener PhoneListener = new MyPhoneStateListener();
+
+                assert tmgr != null;
+                tmgr.listen(PhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+            } catch (Exception e) {
+                Log.e("Phone Receive Error", " " + e);
+            }
+        }
+        private class MyPhoneStateListener extends PhoneStateListener {
+            public void onCallStateChanged(int state, String incomingNumber) {
+                switch (state) {
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        break;
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+
+                        break;
+                    case TelephonyManager.CALL_STATE_RINGING:
+                        Log.i(getClass().getName(), "ИДЕТ ЗВОНОК");
+                        showWindow(pcontext, incomingNumber, mIntent);
+                        break;
                 }
             }
         }

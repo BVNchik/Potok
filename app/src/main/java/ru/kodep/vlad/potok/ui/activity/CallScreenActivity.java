@@ -101,7 +101,7 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                             numberInTheDatabase[0] = user.getName();
                             tvUserName.setText(user.getName());
                             tvTitle.setText(user.getTitle());
-                            Glide.with(context).load(user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.face_icon)).into(ivAvatar);
+                            Glide.with(context).load(user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.face_icon)).apply(RequestOptions.circleCropTransform()).into(ivAvatar);
                         }
                     }
                 }, new Action1<Throwable>() {

@@ -15,17 +15,15 @@ import ru.kodep.vlad.potok.repository.DataRepository;
  */
 
 public class ReminderOfValidity {
-    private AlarmManager manager;
-    private PendingIntent pendingIntent;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onCreate(Context context) {
         PotokApp app = (PotokApp) context.getApplicationContext();
         DataRepository mRepository = app.getDataRepository();
-        manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         myIntent = new Intent(context, ReminderOfValidityReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
         assert manager != null;
         manager.set(AlarmManager.RTC_WAKEUP, mRepository.getmPreferences().getValidTo(), pendingIntent);
     }

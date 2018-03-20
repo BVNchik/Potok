@@ -1,12 +1,17 @@
 package ru.kodep.vlad.potok.ui.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +32,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class FragmentDisplayOfData extends Fragment implements View.OnClickListener {
-    TextView tvSynchronization;
-
+    TextView tvDescription, tvOnAndOff;
+public final  static int PERMISSION_REQUEST_CODE= 1;
 
     private Subscription mSubscription;
 
@@ -36,6 +41,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getExternalStorageFiles();
         setRetainInstance(true);
         potokApp();
     }
@@ -51,7 +57,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     @Override
                     public void call(Boolean aBoolean) {
 
-                        tvSynchronization.setText("Последняя синхронизация: " + mRepository.getLastRequest());
+                        tvDescription.setText("Последняя синхронизация: " + mRepository.getLastRequest());
                     }
                 }, new Action1<Throwable>() {
                     @SuppressLint("SetTextI18n")
@@ -59,7 +65,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     public void call(Throwable throwable) {
                         //обработать исключение
                         throwable.printStackTrace();
-                        tvSynchronization.setText("Исключение: " + throwable);
+                        tvDescription.setText("Исключение: " + throwable);
                     }
                 });
     }
@@ -76,7 +82,8 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.screen_display_of_data, null);
-        tvSynchronization = view.findViewById(R.id.tvSynchronization);
+        tvDescription = view.findViewById(R.id.tvDescription);
+        tvOnAndOff = view.findViewById(R.id.tvOnAndOff);
         view.findViewById(R.id.btnOut).setOnClickListener(this);
 
         return view;
@@ -102,6 +109,23 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                 .commit();
     }
 
+public  void noPermission(){
+        tvOnAndOff.setText(R.string.off);
+        tvOnAndOff.setBackgroundResource(R.drawable.rounded_tv_off);
+    tvDescription.setText("Уважаемый пользователь!\nДля работы приложения требуется разрешение на чтение состояние телефона при звонке. Пожалуйста включите разрешение в настройках приложения!");
 
+}
+    public void getExternalStorageFiles() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_DENIED) {
+            Log.i(getClass().getName(), "запрос на пермишен");
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[] {
+                            Manifest.permission.READ_PHONE_STATE,
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+
+    }
 
 }

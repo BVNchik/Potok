@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 
 public class Preferences {
     private static final String NAME = "Launch";
-    //Вспомогательный класс для хранения выбранного города
     private SharedPreferences sharedPreferences;
 
     @SuppressLint("CommitPrefEdits")
@@ -32,10 +31,8 @@ public class Preferences {
 
     public void setLastRequest(Long lastRequest) {
         sharedPreferences.edit().putLong("LastRequest", lastRequest).apply();
-
     }
 
-    // Возвращаем город по умолчанию, если SharedPreferences пустые
     String getToken() {
         return sharedPreferences.getString("Token", "");
     }
@@ -48,9 +45,7 @@ public class Preferences {
         return sharedPreferences.getLong("ValidTo", 0);
     }
 
-   void setValidTo(long validTo) {
+    void setValidTo(long validTo) {
         sharedPreferences.edit().putLong("ValidTo", validTo).apply();
     }
-
-
 }

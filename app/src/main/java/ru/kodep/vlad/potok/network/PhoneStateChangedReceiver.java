@@ -26,26 +26,18 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     public void onReceive(Context context, Intent intent) {
-        Log.i(getClass().getName(), "RECEIVER ЗАПУЩЕН! ");
+        Log.i(getClass().getName(), "RECEIVER ЗАПУЩЕН! " + intent.getAction());
         if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
             String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                 Log.i(getClass().getName(), "ИДЕТ ЗВОНОК! ");
-                //Трубка не поднята, телефон звонит
+
                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 showWindow(context, phoneNumber, intent);
-
-            } else if (phoneState.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                //Телефон находится в режиме звонка (набор номера при исходящем звонке / разговор)
-                Log.i(getClass().getName(), "РЕЖИМ ЗВОНКА! ");
-            } else if (phoneState.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-                //Телефон находится в ждущем режиме - это событие наступает по окончанию разговора
-                //или в ситуации "отказался поднимать трубку и сбросил звонок".
-                Log.i(getClass().getName(), "ЗВОНОК ОКОНЧЕН! ");
             }
         }
     }
-
+    
     @SuppressLint("InflateParams")
     private void showWindow(final Context context, final String phone, final Intent intent) {
         mUsersStorage = new UsersStorage();
@@ -73,7 +65,6 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                             i.putExtra("phone.number", phoneNumber);
                             i.addFlags(335544320);
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {

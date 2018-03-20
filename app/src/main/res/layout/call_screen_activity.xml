@@ -15,9 +15,7 @@
         android:id="@+id/tvNumberPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:gravity="start"
+        android:gravity="center"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
         android:textSize="22sp"
@@ -30,13 +28,10 @@
         android:id="@+id/tvUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:gravity="start"
+        android:gravity="center"
         android:textAlignment="textStart"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tvTitles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,22 +39,24 @@
 
     <ImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toTopOf="@+id/tvNumberPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo"
         app:srcCompat="@drawable/face_icon" />
 
     <TextView
         android:id="@+id/tvTitles"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:gravity="center"
         android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnAccept"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,22 +64,40 @@
 
     <Button
         android:id="@+id/btnAccept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Принять"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/ic_phone_flat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnRejectCall"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitles" />
 
     <Button
         android:id="@+id/btnRejectCall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Отклонить"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/ic_cross_flat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnAccept" />
+        app:layout_constraintStart_toEndOf="@+id/btnAccept"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitles" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="80dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/ivAvatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
