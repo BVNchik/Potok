@@ -1,7 +1,6 @@
 package ru.kodep.vlad.potok.network;
 
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -31,13 +30,10 @@ public class MyJobService extends JobService {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
-                    @SuppressLint("SetTextI18n")
                     @Override
                     public void call(Boolean aBoolean) {
-
                     }
                 }, new Action1<Throwable>() {
-                    @SuppressLint("SetTextI18n")
                     @Override
                     public void call(Throwable throwable) {
                     }

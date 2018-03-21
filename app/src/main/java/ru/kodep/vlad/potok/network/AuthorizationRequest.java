@@ -1,9 +1,7 @@
 package ru.kodep.vlad.potok.network;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +12,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 import ru.kodep.vlad.potok.PotokApp;
 import ru.kodep.vlad.potok.models.AuthorizationModel;
 import ru.kodep.vlad.potok.models.Credentials;
@@ -54,7 +51,7 @@ public class AuthorizationRequest {
                     String token = customerDataResponse.body().getToken();
                     String validTo = customerDataResponse.body().getValidTo();
                     Date dateValidTo = null;
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
                     simpleDateFormat.setTimeZone(TimeZone.getTimeZone("RFC"));
                     try {
                         dateValidTo = simpleDateFormat.parse(validTo);

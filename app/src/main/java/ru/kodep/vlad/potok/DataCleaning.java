@@ -17,7 +17,7 @@ public class DataCleaning {
         PotokApp app = (PotokApp) context.getApplicationContext();
         DataRepository mRepository = app.getDataRepository();
         SQLiteDatabase db = mRepository.getmDBHelper().getWritableDatabase();
-        db.delete(DBHelper.NAMETABLE, null, null);
+        db.delete(DBHelper.NAME_TABLE, null, null);
         mRepository.getmPreferences().cleaningData(context);
     }
 }

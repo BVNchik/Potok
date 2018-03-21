@@ -12,4 +12,11 @@
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="todo">TODO</string>
+    <string name="wrong_login_or_password">Wrong login or password</string>
+    <string name="important_message">Important message!</string>
+    <string name="permission_background">    For the application to work, you need to be allowed to work in the background. Please check if such a resolution is installed!</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="work_permit"> This application requires this permission!</string>
+    <string name="ok">OK</string>
+    <string name="enable_permission">Dear user! The application requires permission to read the phones status when it rings. Please enable the resolution in the application settings!</string>
 </resources>

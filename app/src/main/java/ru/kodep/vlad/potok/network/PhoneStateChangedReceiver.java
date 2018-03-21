@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import ru.kodep.vlad.potok.database.UsersStorage;
 import ru.kodep.vlad.potok.models.User;
@@ -24,21 +23,16 @@ import rx.schedulers.Schedulers;
 public class PhoneStateChangedReceiver extends BroadcastReceiver {
     private UsersStorage mUsersStorage;
 
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     public void onReceive(Context context, Intent intent) {
-        Log.i(getClass().getName(), "RECEIVER ЗАПУЩЕН! " + intent.getAction());
         if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
             String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-                Log.i(getClass().getName(), "ИДЕТ ЗВОНОК! ");
-
-                String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 showWindow(context, phoneNumber, intent);
             }
         }
     }
-    
-    @SuppressLint("InflateParams")
+
     private void showWindow(final Context context, final String phone, final Intent intent) {
         mUsersStorage = new UsersStorage();
         Single.create(new Single.OnSubscribe<User>() {

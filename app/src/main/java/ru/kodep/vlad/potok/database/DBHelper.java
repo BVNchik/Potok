@@ -18,11 +18,11 @@ public class DBHelper extends SQLiteOpenHelper {
    static final String APPLICATION_URL = "application_url";
    static final String CREATED_AT = "created_at";
    static final String UPDATED_AT = "updated_at";
- public   static final String NAMETABLE = "PersonTable";
+ public   static final String NAME_TABLE = "PersonTable";
 
 
     public DBHelper(Context context) {
-        super(context, NAMETABLE, null, 1);
+        super(context, NAME_TABLE, null, 1);
     }
 
     @Override

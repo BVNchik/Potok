@@ -95,6 +95,6 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
     public void authorizationFailed() {
         progressBar.setVisibility(View.INVISIBLE);
         tvTitle.setVisibility(View.VISIBLE);
-        Toast.makeText(getActivity(), "Неверный email или пароль", LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.wrong_login_or_password, LENGTH_LONG).show();
     }
 }

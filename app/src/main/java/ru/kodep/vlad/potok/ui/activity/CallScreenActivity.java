@@ -1,6 +1,5 @@
 package ru.kodep.vlad.potok.ui.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,8 +21,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import ru.kodep.vlad.potok.database.UsersStorage;
 import ru.kodep.vlad.potok.R;
+import ru.kodep.vlad.potok.database.UsersStorage;
 import ru.kodep.vlad.potok.models.User;
 import rx.Single;
 import rx.SingleSubscriber;
@@ -38,22 +37,11 @@ import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
  * Created by vlad on 13.03.18
  */
 
-@SuppressLint("Registered")
 public class CallScreenActivity extends Activity implements View.OnClickListener {
     Button btnAnswerCall, btnRejectCall;
-    private UsersStorage mUsersStorage;
     BroadcastReceiver receiver = new BReceiver();
-    class BReceiver extends BroadcastReceiver {
-        BReceiver() {
-        }
+    private UsersStorage mUsersStorage;
 
-        @SuppressLint("WrongConstant")
-        public void onReceive(Context context, Intent intent) {
-            if (((TelephonyManager) context.getSystemService("phone")).getCallState() != 1) {
-                CallScreenActivity.this.finish();
-            }
-        }
-    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +58,7 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         showWindow(this, getIntent().getStringExtra("phone.number"));
     }
 
-
     private void showWindow(final Context context, final String phone) {
-        final String[] numberInTheDatabase = new String[1];
         mUsersStorage = new UsersStorage();
 
 
@@ -98,7 +84,6 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                             TextView tvTitle = findViewById(R.id.tvTitles);
                             ImageView ivAvatar = findViewById(R.id.ivAvatar);
                             tvNumber.setText(phone);
-                            numberInTheDatabase[0] = user.getName();
                             tvUserName.setText(user.getName());
                             tvTitle.setText(user.getTitle());
                             Glide.with(context).load(user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.face_icon)).apply(RequestOptions.circleCropTransform()).into(ivAvatar);
@@ -111,7 +96,6 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                     }
                 });
     }
-
 
     @Override
     public void onClick(View v) {
@@ -127,12 +111,13 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
 
     private void rejectCall() {
         try {
-            @SuppressLint("WrongConstant") TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService("phone");
-            Method methodGetITelephony = Class.forName(telephonyManager.getClass().getName()).getDeclaredMethod("getITelephony", new Class[0]);
+            TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            assert telephonyManager != null;
+            Method methodGetITelephony = Class.forName(telephonyManager.getClass().getName()).getDeclaredMethod("getITelephony");
             methodGetITelephony.setAccessible(true);
-            Object telephonyInterface = methodGetITelephony.invoke(telephonyManager, new Object[0]);
-            Class.forName(telephonyInterface.getClass().getName()).getDeclaredMethod("endCall", new Class[0]).invoke(telephonyInterface, new Object[0]);
-        } catch (Exception e) {
+            Object telephonyInterface = methodGetITelephony.invoke(telephonyManager);
+            Class.forName(telephonyInterface.getClass().getName()).getDeclaredMethod("endCall", new Class[0]).invoke(telephonyInterface);
+        } catch (Exception ignored) {
 
         }
         stopScreen();
@@ -150,14 +135,12 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
 
     }
 
-
-
     public void stopScreen() {
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
                 }
                 CallScreenActivity.this.finish();
             }
@@ -184,6 +167,20 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                 CallScreenActivity.this.finish();
             }
         }).start();
+    }
+
+    class BReceiver extends BroadcastReceiver {
+        BReceiver() {
+        }
+
+        public void onReceive(Context context, Intent intent) {
+            Object service = context.getSystemService(Context.TELEPHONY_SERVICE);
+
+            if (service instanceof TelephonyManager && ((TelephonyManager) service).getCallState() != 1) {
+                finish();
+            }
+        }
+
     }
 
 }

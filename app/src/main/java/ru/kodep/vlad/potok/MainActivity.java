@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.Calendar;
 
@@ -44,21 +43,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i(getClass().getName(), "Сработал");
         if (requestCode == FragmentDisplayOfData.PERMISSION_REQUEST_CODE && grantResults.length == 1) {
           if (request_counter < 1){
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 request_counter++;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Важное сообщение!")
-                        .setMessage("Для работы приложения следует разрешить!")
+                builder.setTitle(R.string.important_message)
+                        .setMessage(R.string.work_permit)
                         .setIcon(R.drawable.logo)
                         .setCancelable(false)
-                        .setNegativeButton("ОК",
+                        .setNegativeButton(R.string.ok,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
-                                        fragment.getExternalStorageFiles();
+                                        fragment.getPermissionReadPhoneState();
                                         dialog.cancel();
                                     }
                                 });

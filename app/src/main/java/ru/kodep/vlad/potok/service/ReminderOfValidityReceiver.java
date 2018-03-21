@@ -33,8 +33,8 @@ public class ReminderOfValidityReceiver extends BroadcastReceiver {
                 .setContentInfo("Info")
                 .setContentIntent(resultPendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
-        notificationManager.notify(1,builder.build());
+        notificationManager.notify(1, builder.build());
     }
 }

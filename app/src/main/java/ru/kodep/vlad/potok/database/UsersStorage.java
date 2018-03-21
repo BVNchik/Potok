@@ -1,6 +1,6 @@
 package ru.kodep.vlad.potok.database;
 
-import android.annotation.SuppressLint;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -32,17 +32,17 @@ public class UsersStorage {
         List<String> userPhones = user.getPhones();
         String phone = userPhones.get(0);
         String[] selectionArgs = new String[]{phone};
-        @SuppressLint("Recycle") Cursor cursor = db.query(DBHelper.NAMETABLE, null, selection, selectionArgs, null, null, null);
+    Cursor cursor = db.query(DBHelper.NAME_TABLE, null, selection, selectionArgs, null, null, null);
         if (cursor.moveToFirst()) {
             int userPhoneColIndex = cursor.getColumnIndex(DBHelper.PHONES);
             userPhone = cursor.getString(userPhoneColIndex);
         }
         if (userPhone == null) {
             cv = putCV(user);
-            db.insert(DBHelper.NAMETABLE, null, cv);
+            db.insert(DBHelper.NAME_TABLE, null, cv);
         } else {
             cv = putCV(user);
-            db.update(DBHelper.NAMETABLE, cv, selection, selectionArgs);
+            db.update(DBHelper.NAME_TABLE, cv, selection, selectionArgs);
         }
 
         PotokApp app = (PotokApp) context.getApplicationContext();
@@ -72,7 +72,7 @@ public class UsersStorage {
         String selection = DBHelper.PHONES + "= ?";
         String phone = phoneUser.substring(1);
         String[] selectionArgs = new String[]{phone};
-        @SuppressLint("Recycle") Cursor cursor = db.query(DBHelper.NAMETABLE, null, selection, selectionArgs, null, null, null);
+        Cursor cursor = db.query(DBHelper.NAME_TABLE, null, selection, selectionArgs, null, null, null);
         if (cursor.moveToFirst()) {
             int idColIndex = cursor.getColumnIndex(DBHelper.ID);
             int userNameColIndex = cursor.getColumnIndex(DBHelper.NAME);

@@ -1,19 +1,17 @@
 package ru.kodep.vlad.potok.repository;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import ru.kodep.vlad.potok.ReminderOfValidity;
 import ru.kodep.vlad.potok.database.DBHelper;
 import ru.kodep.vlad.potok.database.UsersStorage;
+import ru.kodep.vlad.potok.models.User;
 import ru.kodep.vlad.potok.network.NetworkService;
 import ru.kodep.vlad.potok.network.Preferences;
-import ru.kodep.vlad.potok.ReminderOfValidity;
 import ru.kodep.vlad.potok.service.JobDispatcher;
-import ru.kodep.vlad.potok.models.User;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -44,7 +42,6 @@ public class DataRepository {
     }
 
     public Single<Boolean> loadUsers() {
-        Log.i("ОБНОВЛЕНИЕ", "ЗАПУСТИЛОСЬ ОБНОВЛЕНИЕ");
         return mNetworkService.loadUsers(mContext)
                 .toObservable()
                 .flatMap(new Func1<List<User>, Observable<User>>() {
@@ -68,7 +65,7 @@ public class DataRepository {
 
     public String getLastRequest() {
         long time = mPreferences.getLastRequest();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
         return simpleDateFormat.format(time);
     }
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--SPACES-->
+    <dimen name="space_small" >8dp</dimen>
+    <dimen name="space_xSmall" >16dp</dimen>
+    <dimen name="space_medium" >24dp</dimen>
+    <dimen name="space_xMedium" >32dp</dimen>
+    <dimen name="space_large" >40dp</dimen>
+    <dimen name="space_xLarge" >50dp</dimen>
+    <dimen name="space_xxLarge" >64dp</dimen>
+    <dimen name="space_xxxLarge" >76dp</dimen>
+    <!--SIZE-->
+    <dimen name="size_xSmall" >55dp</dimen>
+    <dimen name="size_xMedium" >70dp</dimen>
+    <dimen name="size_xxMedium" >80dp</dimen>
+    <dimen name="size_xLarge" >90dp</dimen>
+    <dimen name="size_xxLarge" >130dp</dimen>
+</resources>

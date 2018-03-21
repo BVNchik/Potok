@@ -1,6 +1,5 @@
 package ru.kodep.vlad.potok.network;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,12 +12,12 @@ public class Preferences {
     private static final String NAME = "Launch";
     private SharedPreferences sharedPreferences;
 
-    @SuppressLint("CommitPrefEdits")
+
     public Preferences(Context activity) {
         sharedPreferences = activity.getSharedPreferences(NAME, Activity.MODE_PRIVATE);
     }
 
-    @SuppressLint("CommitPrefEdits")
+
     public void cleaningData(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(NAME, Context.MODE_PRIVATE).edit();
         editor.clear();
@@ -48,4 +47,8 @@ public class Preferences {
     void setValidTo(long validTo) {
         sharedPreferences.edit().putLong("ValidTo", validTo).apply();
     }
+    public void  setFirstStart() {sharedPreferences.edit().putBoolean("FirstStart", false).apply();}
+    public  boolean getFirstStart() { return sharedPreferences.getBoolean("FirstStart", true); }
+
+
 }
