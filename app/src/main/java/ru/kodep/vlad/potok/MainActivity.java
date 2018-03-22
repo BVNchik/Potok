@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == FragmentDisplayOfData.PERMISSION_REQUEST_CODE && grantResults.length == 1) {
+        if (requestCode == FragmentDisplayOfData.PERMISSION_REQUEST_CODE && grantResults.length == 3) {
           if (request_counter < 1){
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 request_counter++;

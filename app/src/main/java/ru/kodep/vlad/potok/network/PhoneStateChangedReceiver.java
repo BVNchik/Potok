@@ -27,7 +27,7 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
             String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 showWindow(context, phoneNumber, intent);
             }
         }
@@ -38,7 +38,6 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
         Single.create(new Single.OnSubscribe<User>() {
             @Override
             public void call(SingleSubscriber<? super User> singleSubscriber) {
-
                 try {
                     User user = mUsersStorage.seekUser(phone, context);
                     singleSubscriber.onSuccess(user);
@@ -73,9 +72,5 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                         throwable.printStackTrace();
                     }
                 });
-
-
     }
-
-
 }

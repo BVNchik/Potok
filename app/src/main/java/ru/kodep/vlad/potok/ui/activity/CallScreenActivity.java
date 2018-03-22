@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import ru.kodep.vlad.potok.R;
 import ru.kodep.vlad.potok.database.UsersStorage;
@@ -60,12 +64,9 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
 
     private void showWindow(final Context context, final String phone) {
         mUsersStorage = new UsersStorage();
-
-
         Single.create(new Single.OnSubscribe<User>() {
             @Override
             public void call(SingleSubscriber<? super User> singleSubscriber) {
-
                 try {
                     User user = mUsersStorage.seekUser(phone, context);
                     singleSubscriber.onSuccess(user);
@@ -101,7 +102,14 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAccept:
-                answerCall();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    TelecomManager telecomManager = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
+                    assert telecomManager != null;
+                    telecomManager.acceptRingingCall();
+                    stopScreen();
+                } else {
+                    answerCall();
+                }
                 break;
             case R.id.btnRejectCall:
                 rejectCall();
@@ -118,7 +126,7 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
             Object telephonyInterface = methodGetITelephony.invoke(telephonyManager);
             Class.forName(telephonyInterface.getClass().getName()).getDeclaredMethod("endCall", new Class[0]).invoke(telephonyInterface);
         } catch (Exception ignored) {
-
+            Log.i(getClass().getName(), Arrays.toString(ignored.getStackTrace()));
         }
         stopScreen();
     }
@@ -132,7 +140,6 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void stopScreen() {
@@ -180,7 +187,6 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                 finish();
             }
         }
-
     }
 
 }

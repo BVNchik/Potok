@@ -33,26 +33,30 @@ import rx.schedulers.Schedulers;
  */
 
 public class FragmentDisplayOfData extends Fragment implements View.OnClickListener {
-    TextView tvDescription, tvOnAndOff;
+    public final static int PERMISSION_REQUEST_CODE = 1;
     private final static String MEIZU = "Meizu";
-public final  static int PERMISSION_REQUEST_CODE= 1;
-
+    TextView tvDescription, tvOnAndOff;
     private Subscription mSubscription;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getPermissionReadPhoneState();
+
         setRetainInstance(true);
         potokApp();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getPermission();
+        } else {
+            getPermissionReadPhoneState();
+        }
     }
 
     private void dialogSettings() {
-            PotokApp app = (PotokApp) getActivity().getApplication();
-            final DataRepository mRepository = app.getDataRepository();
-            Boolean firstStart = mRepository.getmPreferences().getFirstStart();
-        if (Build.BRAND.equals(MEIZU) && firstStart){
+        PotokApp app = (PotokApp) getActivity().getApplication();
+        final DataRepository mRepository = app.getDataRepository();
+        Boolean firstStart = mRepository.getmPreferences().getFirstStart();
+        if (Build.BRAND.equals(MEIZU) && firstStart) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.important_message)
                     .setMessage(R.string.permission_background)
@@ -107,7 +111,7 @@ public final  static int PERMISSION_REQUEST_CODE= 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
         View view = inflater.inflate(R.layout.screen_display_of_data, null);
         tvDescription = view.findViewById(R.id.tvDescription);
         tvOnAndOff = view.findViewById(R.id.tvOnAndOff);
@@ -136,22 +140,41 @@ public final  static int PERMISSION_REQUEST_CODE= 1;
                 .commit();
     }
 
-public  void noPermission(){
+    public void noPermission() {
         tvOnAndOff.setText(R.string.off);
         tvOnAndOff.setBackgroundResource(R.drawable.rounded_tv_off);
-    tvDescription.setText(R.string.enable_permission);
+        tvDescription.setText(R.string.enable_permission);
 
-}
+    }
+
     public void getPermissionReadPhoneState() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE)
-                == PackageManager.PERMISSION_DENIED) {
+                == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[] {
-                            Manifest.permission.READ_PHONE_STATE,
+                    new String[]{
+                            Manifest.permission.READ_PHONE_STATE
                     },
                     PERMISSION_REQUEST_CODE);
-        } else {dialogSettings();}
+        } else {
+            dialogSettings();
+        }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.ANSWER_PHONE_CALLS,
+                            Manifest.permission.CALL_PHONE
+                    },
+                    PERMISSION_REQUEST_CODE);
+        } else {
+            dialogSettings();
+        }
     }
 
 }
