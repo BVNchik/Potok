@@ -19,4 +19,7 @@
     <string name="work_permit"> This application requires this permission!</string>
     <string name="ok">OK</string>
     <string name="enable_permission">Dear user! The application requires permission to read the phones status when it rings. Please enable the resolution in the application settings!</string>
+    <string name="potok">POTOK</string>
+    <string name="error_valid_account">Your account has expired!</string>
+    <string name="info">Info</string>
 </resources>

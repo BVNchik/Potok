@@ -20,4 +20,7 @@
     <string name="work_permit">Для работы приложения необходимо данное разрешение!</string>
     <string name="ok">ОК</string>
     <string name="enable_permission">Уважаемый пользователь! Для работы приложения требуется разрешение на чтение состояние телефона при звонке. Пожалуйста включите разрешение в настройках приложения!</string>
+    <string name="potok">POTOK</string>
+    <string name="error_valid_account">Срок действия вашего аккаунта истек!</string>
+    <string name="info">Info</string>
 </resources>
