@@ -81,4 +81,5 @@ public class DataRepository {
     public ReminderOfValidity getmReminderOfValidity() {
         return mReminderOfValidity;
     }
+    public UsersStorage getmUsersStorage() {return  mUsersStorage; }
 }

@@ -1,6 +1,7 @@
 package ru.kodep.potok.ui.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +46,6 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setRetainInstance(true);
         potokApp();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -53,9 +53,10 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         } else {
             getPermissionReadPhoneState();
         }
+
     }
 
-    private void dialogSettings() {
+    public void dialogSettings() {
         final FragmentActivity activity = getActivity();
         if (activity == null) {
             return;
@@ -63,7 +64,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         PotokApp app = (PotokApp) activity.getApplication();
         final DataRepository mRepository = app.getDataRepository();
         Boolean firstStart = mRepository.getmPreferences().getFirstStart();
-        if (Build.BRAND.equals(MEIZU) && firstStart) {
+        if ((Build.BRAND.equals(MEIZU) && firstStart)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(R.string.important_message)
                     .setMessage(R.string.permission_background)
@@ -78,6 +79,22 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
             AlertDialog alert = builder.create();
             alert.show();
         }
+        if (firstStart){
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(R.string.important_message)
+                    .setMessage(R.string.permission_notification)
+                    .setIcon(R.drawable.logo)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.go_to_settings,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").setFlags(268435456));
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            mRepository.getmPreferences().setFirstStart();
+        }
     }
 
     public void goApplicationSettings(DialogInterface dialog, FragmentActivity activity, DataRepository mRepository) {
@@ -88,8 +105,8 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         activity.startActivity(intent);
         mRepository.getmPreferences().setFirstStart();
         dialog.cancel();
-    }
 
+    }
     public void potokApp() {
         final FragmentActivity activity = getActivity();
         if (activity == null) {
@@ -164,7 +181,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                 == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{
-                            Manifest.permission.READ_PHONE_STATE
+                            Manifest.permission.READ_PHONE_STATE,
                     },
                     PERMISSION_REQUEST_CODE);
         } else {
@@ -185,11 +202,13 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     new String[]{
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.ANSWER_PHONE_CALLS,
-                            Manifest.permission.CALL_PHONE
+                            Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
                     },
                     PERMISSION_REQUEST_CODE);
         } else {
             dialogSettings();
         }
     }
+
 }

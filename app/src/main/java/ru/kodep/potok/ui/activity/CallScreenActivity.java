@@ -1,10 +1,15 @@
 package ru.kodep.potok.ui.activity;
 
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.session.MediaController;
+import android.media.session.MediaSessionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,9 +30,12 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import ru.kodep.potok.PotokApp;
 import ru.kodep.potok.R;
 import ru.kodep.potok.database.UsersStorage;
 import ru.kodep.potok.models.User;
+import ru.kodep.potok.repository.DataRepository;
+import ru.kodep.potok.service.MyNotificationService;
 import ru.kodep.potok.utils.Logger;
 import rx.Single;
 import rx.SingleSubscriber;
@@ -65,7 +73,9 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
     }
 
     private void showWindow(final Context context, final String phone) {
-        mUsersStorage = new UsersStorage();
+        PotokApp app = (PotokApp) context.getApplicationContext();
+        DataRepository mRepository = app.getDataRepository();
+        mUsersStorage = mRepository.getmUsersStorage();
         Single.create(new Single.OnSubscribe<User>() {
             @Override
             public void call(SingleSubscriber<? super User> singleSubscriber) {
@@ -117,6 +127,41 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         }
     }
 
+    @SuppressLint({"WrongConstant", "NewApi"})
+    private void answerCall() {
+        class AnswerCall implements Runnable {
+            private AnswerCall() {
+            }
+
+            public void run() {
+                try {
+                    Runtime.getRuntime().exec("input keyevent " + Integer.toString(79));
+                } catch (IOException e) {
+                    String str = "android.permission.CALL_PRIVILEGED";
+                    Intent putExtra = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(0, 79));
+                    Intent putExtra2 = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(1, 79));
+                    getApplicationContext().sendOrderedBroadcast(putExtra, str);
+                    getApplicationContext().sendOrderedBroadcast(putExtra2, str);
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= 22) {
+            try {
+                for (MediaController mediaController : ((MediaSessionManager) getApplicationContext().getSystemService("media_session")).getActiveSessions(new ComponentName(getApplicationContext(), MyNotificationService.class))) {
+                    if ("com.android.server.telecom".equals(mediaController.getPackageName())) {
+                        mediaController.dispatchMediaButtonEvent(new KeyEvent(1, 79));
+                    }
+                }
+            } catch (SecurityException e) {
+                Logger.print(e);
+            }
+        } else {
+            new Thread(new AnswerCall()).start();
+        }
+
+    }
+
+
     private void rejectCall() {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
@@ -155,32 +200,45 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         }).start();
     }
 
-    private void answerCall() {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Runtime.getRuntime().exec("input keyevent " + Integer.toString(79));
-                } catch (IOException e) {
-                    String enforcedPerm = "android.permission.CALL_PRIVILEGED";
-                    Intent btnDown = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(0, 79));
-                    Intent btnUp = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(1, 79));
-                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnDown, enforcedPerm);
-                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnUp, enforcedPerm);
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e2) {
-                    Logger.print(e2);
-                    Thread.currentThread().interrupt();
-                }
-                CallScreenActivity.this.finish();
-            }
-        }).start();
-    }
+//    private void answerCall() {
+//        new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//
+//                    Runtime.getRuntime().exec("input keyevent " + Integer.toString(79));
+//
+//                } catch (IOException e) {
+//                    Log.i(getClass().getName(), String.valueOf(e));
+//                    Logger.print(e);
+//                    String enforcedPerm = "android.permission.CALL_PRIVILEGED";
+//                    Intent btnDown = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+//                            Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,
+//                                    KeyEvent.KEYCODE_HEADSETHOOK));
+//                    Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+//                            Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP,
+//                                    KeyEvent.KEYCODE_HEADSETHOOK));
+//                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnDown, enforcedPerm);
+//                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnUp, enforcedPerm);
+//                }
+//                try {
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        Thread.sleep(500);
+//                    } else {
+//                        Thread.sleep(1000);
+//                    }
+//                } catch (InterruptedException e2) {
+//                    Logger.print(e2);
+//                    Thread.currentThread().interrupt();
+//                }
+//                CallScreenActivity.this.finish();
+//            }
+//        }).start();
+//    }
 
     class BReceiver extends BroadcastReceiver {
         BReceiver() {
         }
+
         public void onReceive(Context context, Intent intent) {
             Object service = context.getSystemService(Context.TELEPHONY_SERVICE);
 

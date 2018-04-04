@@ -24,7 +24,9 @@ public class UsersStorage {
     private SQLiteDatabase db;
 
     public void saveUser(Context context, User user) {
-        mDBHelper = new DBHelper(context);
+        PotokApp app = (PotokApp) context.getApplicationContext();
+        DataRepository mRepository = app.getDataRepository();
+        mDBHelper = mRepository.getmDBHelper();
         cv = new ContentValues();
         db = mDBHelper.getWritableDatabase();
         String userPhone = null;
@@ -45,9 +47,8 @@ public class UsersStorage {
             db.update(DBHelper.NAME_TABLE, cv, selection, selectionArgs);
         }
         cursor.close();
-        PotokApp app = (PotokApp) context.getApplicationContext();
-        DataRepository mRepository = app.getDataRepository();
         mRepository.getmPreferences().setLastRequest(Calendar.getInstance().getTimeInMillis());
+
 
     }
 
@@ -65,7 +66,9 @@ public class UsersStorage {
 
     public User seekUser(String phoneUser, Context context) {
         List<String> phones = new ArrayList<>();
-        mDBHelper = new DBHelper(context);
+        PotokApp app = (PotokApp) context.getApplicationContext();
+        DataRepository mRepository = app.getDataRepository();
+        mDBHelper = mRepository.getmDBHelper();
         db = mDBHelper.getWritableDatabase();
         String userName = null;
         String title = null;
