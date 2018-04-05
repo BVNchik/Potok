@@ -1,5 +1,6 @@
 package ru.kodep.potok;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentDisplayOfData fragmentDisplayOfData;
     private int requestCounter = 0;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
@@ -71,11 +74,20 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+<<<<<<< HEAD
             } else {
+=======
+            } else  {
+                FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
+>>>>>>> master
                 fragment.noPermission();
             }
         }
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+<<<<<<< HEAD
+=======
+            FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
+>>>>>>> master
             fragment.dialogSettings();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

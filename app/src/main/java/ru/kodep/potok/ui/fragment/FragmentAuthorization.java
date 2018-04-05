@@ -59,7 +59,11 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+<<<<<<< HEAD
        final View view = inflater.inflate(R.layout.activity_authorization_screen, container, false);
+=======
+        final View view = inflater.inflate(R.layout.activity_authorization_screen, container, false);
+>>>>>>> master
         view.setOnClickListener(this);
         etEmailPerson = view.findViewById(R.id.etEmailPerson);
         etPassword = view.findViewById(R.id.etPassword);
@@ -70,9 +74,15 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
         view.findViewById(R.id.tvCheckIn).setOnClickListener(this);
         view.findViewById(R.id.btnToComeIn).setOnClickListener(this);
         credentials = new Credentials();
+<<<<<<< HEAD
         etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+=======
+        etPassword.setOnEditorActionListener( new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId ==  EditorInfo.IME_ACTION_DONE) {
+>>>>>>> master
                     removeTheKeyboard(view);
                     authorization();
                     progressBar.setVisibility(View.VISIBLE);
@@ -87,6 +97,7 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
                 new KeyboardVisibilityEventListener() {
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
+<<<<<<< HEAD
                         if (isOpen) {
                             tvTitle.setVisibility(View.GONE);
                             tvCheckIn.setVisibility(View.GONE);
@@ -97,9 +108,22 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
                             }
                         }
                     }
+=======
+                      if(isOpen){
+                          tvTitle.setVisibility(View.GONE);
+                          tvCheckIn.setVisibility(View.GONE);
+                      } else {
+                          tvCheckIn.setVisibility(View.VISIBLE);
+                          if (progressBar.getVisibility() != View.VISIBLE) {
+                              tvTitle.setVisibility(View.VISIBLE);
+                          }
+                      }
+                      }
+>>>>>>> master
                 });
         return view;
     }
+
 
 
     @Override
@@ -114,7 +138,11 @@ public class FragmentAuthorization extends Fragment implements View.OnClickListe
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URI));
             startActivity(intent);
         }
+<<<<<<< HEAD
         if (v.getId() == R.id.fragmentLayoutRoot) {
+=======
+        if (v.getId() == R.id.fragmentLayoutRoot){
+>>>>>>> master
             removeTheKeyboard(v);
 
         }

@@ -35,7 +35,11 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         PotokApp app = (PotokApp) context.getApplicationContext();
         mRepository = app.getDataRepository();
+<<<<<<< HEAD
         if (intent.getAction().equals(INTENT_ACTION_PHONE_STATE)) {
+=======
+        if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
+>>>>>>> master
             String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
@@ -73,7 +77,11 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                     @Override
                     public Single<? extends User> call(final Throwable throwable) {
                         if (throwable instanceof UserNotFoundException) {
+<<<<<<< HEAD
                             return mRepository.loadUsers()
+=======
+                           return mRepository.loadUsers()
+>>>>>>> master
                                     .flatMap(new Func1<Boolean, Single<User>>() {
                                         @Override
                                         public Single<User> call(Boolean updated) {
@@ -90,6 +98,7 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<User>() {
+<<<<<<< HEAD
                     public void call(User user) {
                         if (user.getName() != null) {
 
@@ -99,6 +108,16 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                                 Logger.print(e);
                             }
 
+=======
+
+                    public void call(User user) {
+                        if (user.getName() != null) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (Throwable throwable) {
+                                Logger.print(throwable);
+                            }
+>>>>>>> master
                             String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                             Intent i = new Intent(context, CallScreenActivity.class);
                             i.putExtras(intent);

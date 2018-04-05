@@ -1,6 +1,11 @@
 package ru.kodep.potok.ui.activity;
 
+<<<<<<< HEAD
 import android.Manifest;
+=======
+
+import android.annotation.SuppressLint;
+>>>>>>> master
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -133,11 +138,16 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         }
     }
 
+<<<<<<< HEAD
 
+=======
+    @SuppressLint({"WrongConstant", "NewApi"})
+>>>>>>> master
     private void answerCall() {
         class AnswerCall implements Runnable {
             private AnswerCall() {
             }
+<<<<<<< HEAD
             public void run() {
                 try {
                     Runtime.getRuntime().exec(INPUT_KEY_EVENT + Integer.toString(KeyEvent.KEYCODE_HEADSETHOOK));
@@ -145,6 +155,16 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
                     String str = Manifest.permission.CALL_PRIVILEGED;
                     Intent putExtra = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(0, 79));
                     Intent putExtra2 = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(1, 79));
+=======
+
+            public void run() {
+                try {
+                    Runtime.getRuntime().exec("input keyevent " + Integer.toString(79));
+                } catch (IOException e) {
+                    String str = "android.permission.CALL_PRIVILEGED";
+                    Intent putExtra = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(0, 79));
+                    Intent putExtra2 = new Intent("android.intent.action.MEDIA_BUTTON").putExtra("android.intent.extra.KEY_EVENT", new KeyEvent(1, 79));
+>>>>>>> master
                     getApplicationContext().sendOrderedBroadcast(putExtra, str);
                     getApplicationContext().sendOrderedBroadcast(putExtra2, str);
                 }
@@ -152,8 +172,13 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         }
         if (Build.VERSION.SDK_INT >= 22) {
             try {
+<<<<<<< HEAD
                 for (MediaController mediaController : ((MediaSessionManager) getApplicationContext().getSystemService(Context.MEDIA_SESSION_SERVICE)).getActiveSessions(new ComponentName(getApplicationContext(), MyNotificationService.class))) {
                     if (ANDROID_SERVER_TELEKOM.equals(mediaController.getPackageName())) {
+=======
+                for (MediaController mediaController : ((MediaSessionManager) getApplicationContext().getSystemService("media_session")).getActiveSessions(new ComponentName(getApplicationContext(), MyNotificationService.class))) {
+                    if ("com.android.server.telecom".equals(mediaController.getPackageName())) {
+>>>>>>> master
                         mediaController.dispatchMediaButtonEvent(new KeyEvent(1, 79));
                     }
                 }
@@ -205,6 +230,44 @@ public class CallScreenActivity extends Activity implements View.OnClickListener
         }).start();
     }
 
+<<<<<<< HEAD
+=======
+//    private void answerCall() {
+//        new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//
+//                    Runtime.getRuntime().exec("input keyevent " + Integer.toString(79));
+//
+//                } catch (IOException e) {
+//                    Log.i(getClass().getName(), String.valueOf(e));
+//                    Logger.print(e);
+//                    String enforcedPerm = "android.permission.CALL_PRIVILEGED";
+//                    Intent btnDown = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+//                            Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,
+//                                    KeyEvent.KEYCODE_HEADSETHOOK));
+//                    Intent btnUp = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
+//                            Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP,
+//                                    KeyEvent.KEYCODE_HEADSETHOOK));
+//                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnDown, enforcedPerm);
+//                    CallScreenActivity.this.getApplicationContext().sendOrderedBroadcast(btnUp, enforcedPerm);
+//                }
+//                try {
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        Thread.sleep(500);
+//                    } else {
+//                        Thread.sleep(1000);
+//                    }
+//                } catch (InterruptedException e2) {
+//                    Logger.print(e2);
+//                    Thread.currentThread().interrupt();
+//                }
+//                CallScreenActivity.this.finish();
+//            }
+//        }).start();
+//    }
+
+>>>>>>> master
     class BReceiver extends BroadcastReceiver {
         BReceiver() {
         }
