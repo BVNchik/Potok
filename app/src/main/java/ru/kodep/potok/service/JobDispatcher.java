@@ -16,12 +16,14 @@ import ru.kodep.potok.network.MyJobService;
  */
 
 public class JobDispatcher {
-public JobDispatcher(Context context) {
+    private static final String TAG_DOWNLOAD_DB = "DownloadDB";
+
+    public JobDispatcher(Context context) {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
         Job job = dispatcher.newJobBuilder()
                 .setLifetime(Lifetime.FOREVER)
                 .setService(MyJobService.class)
-                .setTag("DownloadDB")
+                .setTag(TAG_DOWNLOAD_DB)
                 .setReplaceCurrent(false)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(100 * 60, 120 * 60))

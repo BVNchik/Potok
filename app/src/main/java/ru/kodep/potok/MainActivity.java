@@ -14,9 +14,9 @@ import ru.kodep.potok.ui.fragment.FragmentAuthorization;
 import ru.kodep.potok.ui.fragment.FragmentDisplayOfData;
 
 public class MainActivity extends AppCompatActivity {
-    private int requestCounter = 0;
     FragmentAuthorization fragmentAuthorization;
     FragmentDisplayOfData fragmentDisplayOfData;
+    private int requestCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,30 +50,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
         if (requestCode == FragmentDisplayOfData.PERMISSION_REQUEST_CODE && grantResults.length == 3) {
-          if (requestCounter < 1){
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                requestCounter++;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.important_message)
-                        .setMessage(R.string.work_permit)
-                        .setIcon(R.drawable.logo)
-                        .setCancelable(false)
-                        .setNegativeButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
-                                        fragment.getPermissionReadPhoneState();
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            } }
-            else{
-                FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
+            if (requestCounter < 1) {
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    requestCounter++;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(R.string.important_message)
+                            .setMessage(R.string.work_permit)
+                            .setIcon(R.drawable.logo)
+                            .setCancelable(false)
+                            .setNegativeButton(R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
+                                            fragment.getPermissionReadPhoneState();
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            } else {
                 fragment.noPermission();
             }
+        }
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            fragment.dialogSettings();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

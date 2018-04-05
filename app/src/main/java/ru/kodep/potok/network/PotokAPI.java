@@ -2,7 +2,6 @@ package ru.kodep.potok.network;
 
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -14,18 +13,22 @@ import ru.kodep.potok.models.ResponseData;
 import ru.kodep.potok.models.User;
 import rx.Single;
 
+import static ru.kodep.potok.network.ConstAPI.HEADER_AUTHORIZATION;
+import static ru.kodep.potok.network.ConstAPI.UPDATED_FROM;
+
 
 /**
  * Created by vlad on 22.02.18
  */
 public interface PotokAPI {
 
-    @GET("v1/call/applicants?")
+    @GET("call/applicants?")
     Single<ResponseData<List<User>>> customerData(
-            @Header("Authorization") String bearerToken,
-            @Query("by_updated_at_period[from]") String lastRequest);
+            @Header(HEADER_AUTHORIZATION) String bearerToken,
+            @Query(UPDATED_FROM) String lastRequest);
 
     @POST("sessions")
-    Call<AuthorizationModel> req(
+    Single<AuthorizationModel> req(
             @Body Credentials credentials );
 }
+

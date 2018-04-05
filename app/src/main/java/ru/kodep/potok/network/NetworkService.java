@@ -8,6 +8,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.kodep.potok.PotokApp;
+import ru.kodep.potok.models.AuthorizationModel;
+import ru.kodep.potok.models.Credentials;
 import ru.kodep.potok.models.ResponseData;
 import ru.kodep.potok.models.User;
 import ru.kodep.potok.repository.DataRepository;
@@ -19,7 +21,9 @@ import rx.functions.Func1;
  */
 
 public class NetworkService {
-    private static final String BASE_URL = "https://app.potok.io/api/apps/";
+
+    private static final int API_VERSION = 1;
+    private static final String BASE_URL = "https://app.potok.io/api/apps/v" + API_VERSION + "/";
     private PotokAPI mPotokAPI;
 
     public NetworkService() {
@@ -41,5 +45,12 @@ public class NetworkService {
                         return listResponseData.getData();
                     }
                 });
+    }
+
+    public Single<AuthorizationModel>  authorization(String email, String password) {
+        Credentials credentials = new Credentials();
+        credentials.setEmail(email);
+        credentials.setPassword(password);
+        return mPotokAPI.req(credentials);
     }
 }

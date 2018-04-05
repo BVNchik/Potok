@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -29,7 +30,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-
 /**
  * Created by vlad on 22.02.18
  */
@@ -37,6 +37,10 @@ import rx.schedulers.Schedulers;
 public class FragmentDisplayOfData extends Fragment implements View.OnClickListener {
     public static final int PERMISSION_REQUEST_CODE = 1;
     private static final String MEIZU = "Meizu";
+    private static final String MEIZU_SHOW_APPSEC = "com.meizu.safe.security.SHOW_APPSEC";
+    private static final String MEIZU_SAFE = "com.meizu.safe";
+    private static final String MEIZU_APP_SEC_ACTIVITY = "com.meizu.safe.security.AppSecActivity";
+    private static final String INTENT_EXTRA_PACKAGE_NAME = "packageName";
     TextView tvDescription;
     TextView tvOnAndOff;
     private Subscription mSubscription;
@@ -45,7 +49,6 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setRetainInstance(true);
         potokApp();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -53,9 +56,10 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         } else {
             getPermissionReadPhoneState();
         }
+
     }
 
-    private void dialogSettings() {
+    public void dialogSettings() {
         final FragmentActivity activity = getActivity();
         if (activity == null) {
             return;
@@ -63,7 +67,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         PotokApp app = (PotokApp) activity.getApplication();
         final DataRepository mRepository = app.getDataRepository();
         Boolean firstStart = mRepository.getmPreferences().getFirstStart();
-        if (Build.BRAND.equals(MEIZU) && firstStart) {
+        if ((Build.BRAND.equals(MEIZU) && firstStart)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(R.string.important_message)
                     .setMessage(R.string.permission_background)
@@ -78,16 +82,35 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
             AlertDialog alert = builder.create();
             alert.show();
         }
+        if (firstStart){
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle(R.string.important_message)
+                    .setMessage(R.string.permission_notification)
+                    .setIcon(R.drawable.logo)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.go_to_settings,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                        startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                    }
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            mRepository.getmPreferences().setFirstStart();
+        }
     }
 
     public void goApplicationSettings(DialogInterface dialog, FragmentActivity activity, DataRepository mRepository) {
-        Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
-        intent.setClassName("com.meizu.safe", "com.meizu.safe.security.AppSecActivity");
-        intent.putExtra("packageName", activity.getPackageName());
+        Intent intent = new Intent(MEIZU_SHOW_APPSEC);
+        intent.setClassName(MEIZU_SAFE, MEIZU_APP_SEC_ACTIVITY);
+        intent.putExtra(INTENT_EXTRA_PACKAGE_NAME, activity.getPackageName());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         mRepository.getmPreferences().setFirstStart();
         dialog.cancel();
+
     }
 
     public void potokApp() {
@@ -164,7 +187,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                 == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{
-                            Manifest.permission.READ_PHONE_STATE
+                            Manifest.permission.READ_PHONE_STATE,
                     },
                     PERMISSION_REQUEST_CODE);
         } else {
@@ -185,11 +208,13 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     new String[]{
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.ANSWER_PHONE_CALLS,
-                            Manifest.permission.CALL_PHONE
+                            Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
                     },
                     PERMISSION_REQUEST_CODE);
         } else {
             dialogSettings();
         }
     }
+
 }

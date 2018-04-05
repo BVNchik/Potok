@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#aaabac</color>
+    <color name="colorPrimaryDark">#aaabac</color>
+    <color name="colorAccent">#aaabac</color>
     <color name="colorButton">#00bdff</color>
     <color name="text_color_button">#82dfff</color>
     <color name="colorBackground">#FFFFFF</color>
@@ -10,4 +10,6 @@
     <color name="colorTvOnBackground">#00ce02</color>
     <color name="colorTvOffBackground">#ff3026</color>
     <color name="textColor">#585858</color>
+    <color name="colorActionBar">#b9b7b7</color>
+
 </resources>

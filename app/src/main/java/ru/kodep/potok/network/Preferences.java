@@ -10,6 +10,10 @@ import android.content.SharedPreferences;
 
 public class Preferences {
     private static final String NAME = "Launch";
+    private static final String KEY_TOKEN = "Token";
+    private static final String KEY_VALID_TO = "ValidTo";
+    private static final String KEY_FIRST_START = "FirstStart";
+    private static final String KEY_LAST_REQUEST = "LastRequest";
     private SharedPreferences sharedPreferences;
 
 
@@ -25,30 +29,36 @@ public class Preferences {
     }
 
     public long getLastRequest() {
-        return sharedPreferences.getLong("LastRequest", 0);
+        return sharedPreferences.getLong(KEY_LAST_REQUEST, 0);
     }
 
     public void setLastRequest(Long lastRequest) {
-        sharedPreferences.edit().putLong("LastRequest", lastRequest).apply();
+        sharedPreferences.edit().putLong(KEY_LAST_REQUEST, lastRequest).apply();
     }
 
     String getToken() {
-        return sharedPreferences.getString("Token", "");
+        return sharedPreferences.getString(KEY_TOKEN, "");
     }
 
-    void setToken(String token) {
-        sharedPreferences.edit().putString("Token", token).apply();
+    public void setToken(String token) {
+        sharedPreferences.edit().putString(KEY_TOKEN, token).apply();
     }
 
     public long getValidTo() {
-        return sharedPreferences.getLong("ValidTo", 0);
+        return sharedPreferences.getLong(KEY_VALID_TO, 0);
     }
 
-    void setValidTo(long validTo) {
-        sharedPreferences.edit().putLong("ValidTo", validTo).apply();
+    public void setValidTo(long validTo) {
+        sharedPreferences.edit().putLong(KEY_VALID_TO, validTo).apply();
     }
-    public void  setFirstStart() {sharedPreferences.edit().putBoolean("FirstStart", false).apply();}
-    public  boolean getFirstStart() { return sharedPreferences.getBoolean("FirstStart", true); }
+
+    public void setFirstStart() {
+        sharedPreferences.edit().putBoolean(KEY_FIRST_START, false).apply();
+    }
+
+    public boolean getFirstStart() {
+        return sharedPreferences.getBoolean(KEY_FIRST_START, true);
+    }
 
 
 }

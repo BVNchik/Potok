@@ -13,9 +13,10 @@
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="todo">TODO</string>
-    <string name="wrong_login_or_password">Неверный email или пароль</string>
+    <string name="wrong_login_or_password">Ошибка авторизации!</string>
     <string name="important_message">Важное сообщение!</string>
     <string name="permission_background">Для работы приложения необходимо разрешить работу в фоне. Пожалуйста проверьте установлено ли такое разрешение!</string>
+    <string name="permission_notification">Для работы приложения необходимо разрешить доступ к уведомлениям. Пожалуйста проверьте установлено ли такое разрешение! Без данного разрешения приложение не будент работать корректно!</string>
     <string name="go_to_settings">Перейти в настройки</string>
     <string name="work_permit">Для работы приложения необходимо данное разрешение!</string>
     <string name="ok">ОК</string>

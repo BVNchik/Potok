@@ -13,6 +13,8 @@
         android:layout_marginBottom="@dimen/space_xxxLarge"
         android:layout_marginEnd="@dimen/space_xLarge"
         android:layout_marginStart="@dimen/space_xLarge"
+        android:layout_marginLeft="@dimen/space_xLarge"
+        android:layout_marginRight="@dimen/space_xLarge"
         android:background="@drawable/rounded_button"
         android:text="@string/out"
         android:textColor="@color/text_color_button"

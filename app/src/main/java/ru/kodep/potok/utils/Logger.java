@@ -8,8 +8,7 @@ import ru.kodep.potok.BuildConfig;
 
 public class Logger {
 
-    @SuppressWarnings("SingleStatementInBlock")
-    public static void print(Throwable throwable) {
+  public static void print(Throwable throwable) {
         if (BuildConfig.DEBUG) {
             throwable.printStackTrace();
         }
