@@ -84,7 +84,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         }
         if (firstStart) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(R.string.important_message)
+            builder.setTitle(R.string.access_notifications)
                     .setMessage(R.string.permission_notification)
                     .setIcon(R.drawable.logo)
                     .setCancelable(false)
