@@ -14,11 +14,8 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="@dimen/space_xLarge"
         android:layout_marginStart="@dimen/space_xLarge"
-<<<<<<< HEAD
         android:layout_marginLeft="@dimen/space_xLarge"
         android:layout_marginRight="@dimen/space_xLarge"
-=======
->>>>>>> master
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:gravity="center"
@@ -42,11 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_xLarge"
         android:layout_marginStart="@dimen/space_xLarge"
-<<<<<<< HEAD
         android:layout_marginLeft="@dimen/space_xLarge"
         android:layout_marginRight="@dimen/space_xLarge"
-=======
->>>>>>> master
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"

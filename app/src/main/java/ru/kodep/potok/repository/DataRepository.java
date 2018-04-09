@@ -108,12 +108,8 @@ public class DataRepository {
     public ReminderOfValidity getmReminderOfValidity() {
         return mReminderOfValidity;
     }
-<<<<<<< HEAD
 
     public UsersStorage getmUsersStorage() {
         return mUsersStorage;
     }
-=======
-    public UsersStorage getmUsersStorage() {return  mUsersStorage; }
->>>>>>> master
 }

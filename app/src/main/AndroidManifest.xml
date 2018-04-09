@@ -28,16 +28,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
         <activity
             android:name="ru.kodep.potok.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
-=======
-        <activity android:name="ru.kodep.potok.MainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait">
->>>>>>> master
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,23 +48,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
+
 
         <service
             android:name=".service.MyNotificationService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-=======
-        <service android:label="@string/app_name" android:name=".service.MyNotificationService" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
->>>>>>> master
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
         <receiver android:name="ru.kodep.potok.network.PhoneStateChangedReceiver">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />

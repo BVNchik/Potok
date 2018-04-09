@@ -74,20 +74,11 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-<<<<<<< HEAD
             } else {
-=======
-            } else  {
-                FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
->>>>>>> master
                 fragment.noPermission();
             }
         }
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-<<<<<<< HEAD
-=======
-            FragmentDisplayOfData fragment = (FragmentDisplayOfData) getSupportFragmentManager().findFragmentById(R.id.fragmentLayout);
->>>>>>> master
             fragment.dialogSettings();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

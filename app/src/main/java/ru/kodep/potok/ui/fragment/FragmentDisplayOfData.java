@@ -1,7 +1,6 @@
 package ru.kodep.potok.ui.fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -83,7 +82,7 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
             AlertDialog alert = builder.create();
             alert.show();
         }
-        if (firstStart){
+        if (firstStart) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle(R.string.important_message)
                     .setMessage(R.string.permission_notification)
@@ -92,13 +91,9 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
                     .setNegativeButton(R.string.go_to_settings,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-<<<<<<< HEAD
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                         startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                                     }
-=======
-                                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS").setFlags(268435456));
->>>>>>> master
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -115,13 +110,8 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         activity.startActivity(intent);
         mRepository.getmPreferences().setFirstStart();
         dialog.cancel();
-<<<<<<< HEAD
-
     }
-=======
->>>>>>> master
 
-    }
     public void potokApp() {
         final FragmentActivity activity = getActivity();
         if (activity == null) {
