@@ -3,6 +3,9 @@ package ru.kodep.potok;
 import android.app.Application;
 
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import ru.kodep.potok.database.DBHelper;
 import ru.kodep.potok.database.UsersStorage;
 import ru.kodep.potok.network.NetworkService;
@@ -20,6 +23,7 @@ public class PotokApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         mDataRepository = new DataRepository(new UsersStorage(), new NetworkService(), new JobDispatcher(this),  new DBHelper(this), new ReminderOfValidity(), new Preferences(this), this);
     }
     public DataRepository getDataRepository() {

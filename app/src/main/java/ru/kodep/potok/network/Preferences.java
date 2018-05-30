@@ -36,7 +36,7 @@ public class Preferences {
         sharedPreferences.edit().putLong(KEY_LAST_REQUEST, lastRequest).apply();
     }
 
-    String getToken() {
+    public String getToken() {
         return sharedPreferences.getString(KEY_TOKEN, "");
     }
 

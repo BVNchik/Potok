@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,31 +33,31 @@ public class UsersStorage {
         String userPhone = null;
         String selection = DBHelper.PHONES + "= ?";
         List<String> userPhones = user.getPhones();
-        String phone = userPhones.get(0);
-        String[] selectionArgs = new String[]{phone};
-        Cursor cursor = db.query(DBHelper.NAME_TABLE, null, selection, selectionArgs, null, null, null);
-        if (cursor.moveToFirst()) {
-            int userPhoneColIndex = cursor.getColumnIndex(DBHelper.PHONES);
-            userPhone = cursor.getString(userPhoneColIndex);
+        for (int i = 0; i < userPhones.size(); i++) {
+            String phone = userPhones.get(i);
+            String[] selectionArgs = new String[]{phone};
+            Cursor cursor = db.query(DBHelper.NAME_TABLE, null, selection, selectionArgs, null, null, null);
+            if (cursor.moveToFirst()) {
+                int userPhoneColIndex = cursor.getColumnIndex(DBHelper.PHONES);
+                userPhone = cursor.getString(userPhoneColIndex);
+            }
+            if (userPhone == null) {
+                cv = putCV(user, i);
+                db.insert(DBHelper.NAME_TABLE, null, cv);
+            } else {
+                cv = putCV(user, i);
+                db.update(DBHelper.NAME_TABLE, cv, selection, selectionArgs);
+            }
+            cursor.close();
         }
-        if (userPhone == null) {
-            cv = putCV(user);
-            db.insert(DBHelper.NAME_TABLE, null, cv);
-        } else {
-            cv = putCV(user);
-            db.update(DBHelper.NAME_TABLE, cv, selection, selectionArgs);
-        }
-        cursor.close();
         mRepository.getmPreferences().setLastRequest(Calendar.getInstance().getTimeInMillis());
-
-
     }
 
-    private ContentValues putCV(User user) {
+    private ContentValues putCV(User user, int i) {
         cv.put(DBHelper.NAME, user.getName());
         cv.put(DBHelper.ID, user.getId());
         cv.put(DBHelper.TITLE, user.getTitle());
-        cv.put(DBHelper.PHONES, user.getPhones().get(0));
+        cv.put(DBHelper.PHONES, user.getPhones().get(i));
         cv.put(DBHelper.AVATAR, user.getAvatar());
         cv.put(DBHelper.APPLICATION_URL, user.getApplicantUrl());
         cv.put(DBHelper.CREATED_AT, user.getCreatedAt());

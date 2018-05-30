@@ -1,6 +1,7 @@
 package ru.kodep.potok.ui.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ru.kodep.potok.DataCleaning;
 import ru.kodep.potok.PotokApp;
 import ru.kodep.potok.R;
@@ -30,11 +36,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+
 /**
  * Created by vlad on 22.02.18
  */
 
-public class FragmentDisplayOfData extends Fragment implements View.OnClickListener {
+public class FragmentDisplayOfData extends Fragment implements View.OnClickListener{
     public static final int PERMISSION_REQUEST_CODE = 1;
     private static final String MEIZU = "Meizu";
     private static final String MEIZU_SHOW_APPSEC = "com.meizu.safe.security.SHOW_APPSEC";
@@ -44,7 +51,8 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
     TextView tvDescription;
     TextView tvOnAndOff;
     private Subscription mSubscription;
-
+    PotokApp app;
+    DataRepository mRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,23 +125,28 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
         if (activity == null) {
             return;
         }
-        PotokApp app = (PotokApp) getActivity().getApplication();
-        final DataRepository mRepository = app.getDataRepository();
-        mSubscription = mRepository.loadUsers()
+        app = (PotokApp) getActivity().getApplication();
+        mRepository = app.getDataRepository();
+        @SuppressLint("SimpleDateFormat") String data = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date(Calendar.getInstance().getTimeInMillis() ));
+        mRepository.writeFile("Отправлен запрос на сервер ("+data + ")");
+        mSubscription = mRepository.fetchAllUsers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Boolean>() {
+                .subscribe(new Action1<Integer>() {
                     @Override
-                    public void call(Boolean aBoolean) {
+                    public void call(Integer integer) {
                         //
-                    }
+                        mRepository.numberOfContacts(integer);
+                                           }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        mRepository.writeFile("Произошла ошибка при загрузке данных: " + throwable + throwable.getMessage());
                         Log.i(getClass().getName(), String.valueOf(throwable));
                     }
                 });
     }
+
 
     @Override
     public void onDestroyView() {
@@ -215,5 +228,4 @@ public class FragmentDisplayOfData extends Fragment implements View.OnClickListe
             dialogSettings();
         }
     }
-
 }

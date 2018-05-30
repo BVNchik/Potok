@@ -14,6 +14,8 @@ import ru.kodep.potok.models.User;
 import rx.Single;
 
 import static ru.kodep.potok.network.ConstAPI.HEADER_AUTHORIZATION;
+import static ru.kodep.potok.network.ConstAPI.PAGE;
+import static ru.kodep.potok.network.ConstAPI.PER_PAGE;
 import static ru.kodep.potok.network.ConstAPI.UPDATED_FROM;
 
 
@@ -22,13 +24,16 @@ import static ru.kodep.potok.network.ConstAPI.UPDATED_FROM;
  */
 public interface PotokAPI {
 
-    @GET("call/applicants?")
+    @GET("call/applicants")
     Single<ResponseData<List<User>>> customerData(
             @Header(HEADER_AUTHORIZATION) String bearerToken,
-            @Query(UPDATED_FROM) String lastRequest);
+            @Query(UPDATED_FROM) String lastRequest,
+            @Query(PAGE) int page,
+            @Query(PER_PAGE) int perPage);
+
 
     @POST("sessions")
     Single<AuthorizationModel> req(
-            @Body Credentials credentials );
+            @Body Credentials credentials);
 }
 

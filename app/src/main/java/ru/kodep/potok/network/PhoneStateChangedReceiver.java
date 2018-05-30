@@ -1,9 +1,14 @@
 package ru.kodep.potok.network;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ru.kodep.potok.PotokApp;
 import ru.kodep.potok.database.UsersStorage;
@@ -27,8 +32,8 @@ import rx.schedulers.Schedulers;
 public class PhoneStateChangedReceiver extends BroadcastReceiver {
     public static final String INTENT_EXTRA_NUMBER_PHONE = "phone.number";
     private static final String INTENT_ACTION_PHONE_STATE = "android.intent.action.PHONE_STATE";
+    int repeat = 0;
     private UsersStorage mUsersStorage;
-
     private DataRepository mRepository;
 
 
@@ -40,7 +45,8 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
             if (phoneState.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
                 String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                 showWindow(context, phoneNumber, intent);
-
+                @SuppressLint("SimpleDateFormat") String data = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date(Calendar.getInstance().getTimeInMillis()));
+                mRepository.writeFile("Звонит номер: " + phoneNumber + " (" + data + ")");
             }
         }
     }
@@ -51,9 +57,17 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
             public void call(SingleSubscriber<? super User> singleSubscriber) {
                 try {
                     User user = mUsersStorage.seekUser(phone, context);
+                    repeat++;
                     if (user.getName() != null) {
                         singleSubscriber.onSuccess(user);
+                        mRepository.writeFile("Номер: " + phone + " определился как: " + user.getName());
                     } else {
+                        if (repeat == 1) {
+                            mRepository.writeFile("Номер: " + phone + " номера в базе нет: ");
+                        } else {
+                            mRepository.writeFile("Номер: " + phone + " контакта с таким номером на сервере нет: ");
+                            repeat = 0;
+                        }
                         singleSubscriber.onError(new UserNotFoundException());
                     }
                 } catch (Exception e) {
@@ -73,11 +87,12 @@ public class PhoneStateChangedReceiver extends BroadcastReceiver {
                     @Override
                     public Single<? extends User> call(final Throwable throwable) {
                         if (throwable instanceof UserNotFoundException) {
-                            return mRepository.loadUsers()
-                                    .flatMap(new Func1<Boolean, Single<User>>() {
+                            return mRepository.fetchAllUsers()
+                                    .flatMap(new Func1<Integer, Single<User>>() {
                                         @Override
-                                        public Single<User> call(Boolean updated) {
-                                            return updated
+                                        public Single<User> call(Integer updated) {
+                                            mRepository.writeFile("Запрос на сервер для поиска номера");
+                                            return (updated>0)
                                                     ? findUser(context, phone)
                                                     : Single.<User>error(throwable);
                                         }

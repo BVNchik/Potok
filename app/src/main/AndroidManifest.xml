@@ -78,5 +78,10 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8c997cf55fb2c0048f16d76b845663606cfeae3c" />
+
     </application>
 </manifest>
