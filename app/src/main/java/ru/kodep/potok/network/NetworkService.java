@@ -26,11 +26,11 @@ public class NetworkService {
     private PotokAPI mPotokAPI;
 
     public NetworkService() {
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        OkHttpClient client = new OkHttpClient
-//                .Builder()
-//                .addInterceptor(interceptor).build();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient
+                .Builder()
+                .addInterceptor(interceptor).build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

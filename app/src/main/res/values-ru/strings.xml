@@ -16,7 +16,11 @@
     <string name="wrong_login_or_password">Ошибка авторизации!</string>
     <string name="important_message">Важное сообщение!</string>
     <string name="access_notifications">Доступк к уведомлениям! </string>
-    <string name="permission_background">Для работы приложения необходимо разрешить работу в фоне. Пожалуйста проверьте установлено ли такое разрешение!</string>
+    <string name="permission_background">Для корректной работы приложения необходимо разрешить:
+\n- работу в фоновом режиме;
+\n- показ на экране блокировки;
+\n- всплывающие уведомления.
+\nПроверьте, установлены ли данные разрешения.</string>
     <string name="permission_notification">Чтобы приложение работало корректно, разрешите ему доступ к уведомлениям.</string>
     <string name="go_to_settings">Перейти в настройки</string>
     <string name="work_permit">Для работы приложения необходимо данное разрешение!</string>

@@ -199,7 +199,7 @@ public class DataRepository {
             try {
                 if(br == null) {
                     writesFile("ЛОГИ:");
-                }else {
+                } else {
                     br.close();
                 }
             } catch (IOException e) {
